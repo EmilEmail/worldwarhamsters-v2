@@ -1,0 +1,44 @@
+header .small-header-upfront {
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	margin: 16px;
+
+	font-family: header;
+	font-size: 1rem;
+
+	color: none;
+	text-shadow: 2px 0px 2px var(--color1);
+}
+
+.menu-wrapper {
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+	
+	font-family: header;
+	font-size: 30px;
+
+	background: linear-gradient(transparent, var(--color1));
+	display: flex;
+	justify-content: space-evenly;
+	width: 100%;
+}
+
+.menu-wrapper a {
+	text-decoration: none;
+	color: var(--color6);
+	padding: 16px;
+	border-radius: 50%;
+	transition: all 1s;
+}
+.menu-wrapper a:hover {
+	color: var(--color7);
+	padding: 16px;
+	background: var(--color1);
+	
+}
+
+.Link-Active {
+	color: chartreuse;
+}

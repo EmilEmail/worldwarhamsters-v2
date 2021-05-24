@@ -1,4 +1,4 @@
-export interface HamsterId {
+export interface HamsterWithId {
 	name:string, 
 	loves:string, 
 	favFood:string, 

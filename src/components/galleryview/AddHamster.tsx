@@ -1,62 +1,86 @@
 import React, { useState } from 'react'
+import { POST } from '../../globalFunctions/G-ApiRequest'
 import './AddHamster.css'
 
 const AddHamster = () => {
-	const [wrongName, setWrongName] = useState<null|string>()
-	const [errorText, setErrorText] = useState<null|string>()
-	let newHamster = {name: '', age: 0, loves: '', favFood: '', imgName: '', wins: 0, defeats: 0, games:0}
+	const [wrongName, setWrongName] = useState<null|string>();
+	const [errorText, setErrorText] = useState<null|string>();
+	const [characterCount, setCharacterCount] = useState<number>(0);
+	const [hamster, setHamster] = useState({name: '', age: 0, loves: '', favFood: '', imgName: '', wins: 0, defeats: 0, games:0});
 
-	function changeName(e:string) {
-		newHamster.name = e;
+	function validateName(value:string) {
+		let newHamster = hamster;
+		let currentValue = hamster.name;
+		newHamster.name = value;
+		newHamster.name.split('').forEach(ch => {
+			let str = 'abcdefghijklmnopqrstuvwyz ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+			if (str.split('').includes(ch)) {
+				newHamster.name = value;
+			}
+			else newHamster.name = currentValue
+		});
+
+		setHamster(newHamster);
+		setWrongName(null)
+		setErrorText(null)
+		setCharacterCount(newHamster.name.length)
+		if (newHamster.name.length < 3 || newHamster.name.length > 32) setWrongName('wrong-color');
+		
 	}
-	function nameBlur() {
-		if (newHamster.name === '') {
+	function stringBlur() {
+		console.log(hamster.name)
+		if (hamster.name === '') {
 			setWrongName('wrong-in-input')
-			setErrorText('Please enter a name with 3-16 characters')
+			setErrorText('Please enter a name with 3-32 characters')
 		}
-		else if (newHamster.name.length < 3) {
-
+		else if (hamster.name.length < 3) {
+			setWrongName('wrong-in-input')
+			setErrorText('Please enter a name with 3-32 characters')
+		}
+		else if (hamster.name.length > 32) {
+			setWrongName('wrong-in-input')
+			setErrorText('Please enter a name with 3-32 characters')
 		}
 	}
 
-	function changeAge(e:string) {
-		let num = Number(e)
-		newHamster.age = num;
-	}
-	function changeLoves(e:string) {
-		newHamster.loves = e;
-	}
-	function changeFavFood(e:string) {
-		newHamster.favFood = e;
-	}
-	function changeImgName(e:string) {
-		newHamster.imgName = e;
+	function setNumber(num: string) {
 	}
 
-	function AddNewHamster() {
-		console.log(newHamster)
+	function addNewHamster() {
+		const url = '/hamsters'
+		POST(url, hamster)
 	}
+
 	return (
 		<section className="add-hamster-form">
 			<h2>Add New Hamster</h2>
 			<label>
 				<p>Name:</p>
-				<input className={wrongName ? wrongName : ''} type="text" onBlur={nameBlur} onChange={(e) => changeName(e.target.value)} />
-				<span>{errorText}</span>
+				<input 
+					className={wrongName === 'wrong-in-input' ? wrongName : ''} 
+					type="text" onBlur={stringBlur} 
+					onChange={(e) => validateName(e.target.value)}
+					value={hamster.name} 
+				/>
+				<div>
+					<p className={wrongName === 'wrong-color' ? 'wrong-color' : ''}>
+						{errorText} ({characterCount})
+					</p>
+				</div>
 			</label>
 			<label>Age: 
-				<input type="number" onChange={(e) => changeAge(e.target.value)} />
+				<input type="number" onChange={(e) => setNumber(e.target.value)} />
 			</label>
 			<label>Loves: 
-				<input type="text" onChange={(e) => changeLoves(e.target.value)} />
+				<input type="text" />
 			</label>
 			<label>Favorite Food: 
-				<input type="text" onChange={(e) => changeFavFood(e.target.value)} />
+				<input type="text" />
 			</label>
 			<label>Image Source: 
-				<input type="text" onChange={(e) => changeImgName(e.target.value)} />
+				<input type="text" />
 			</label>
-			<button onClick={AddNewHamster} >Add new hamster</button>
+			<button onClick={addNewHamster} >Add new hamster</button>
 		</section>
 	)
 }

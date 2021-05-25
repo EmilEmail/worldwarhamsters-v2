@@ -1,0 +1,12 @@
+.gallery-view {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 2em;
+	max-height: 50vh;
+	text-align: center;
+}
+.gallery-view img {
+	max-width: 100px;
+	min-height: 75px;
+	border-radius: 2em;
+}

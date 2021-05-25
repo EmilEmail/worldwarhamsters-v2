@@ -1,0 +1,34 @@
+.battle-section {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 4em;
+}
+
+.blinking-header {
+	text-align: center;
+	position: relative;
+	top: -2em;
+	animation: blinking 2s infinite ease-out;
+}
+
+@keyframes blinking {
+	0% {color: var(--color7)}
+	50% {color: transparent}
+	100% {color: var(--color7)}
+	
+}
+
+@media only screen and (max-width: 600px) {
+	.battle-view {
+		padding: 2em;
+	}
+	.battle-section {
+		flex-direction: column;
+	}
+	.blinking-header {
+		text-align: center;
+		position: sticky;
+		top: 10px;
+	}
+  }

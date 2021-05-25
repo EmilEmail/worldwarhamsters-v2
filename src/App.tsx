@@ -3,21 +3,28 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import './App.css';
 import StartPage from './views/StartPage';
 import MainView from './views/MainView'
-import {Hamster} from './interfaces/hamster'
 import {GET} from './globalFunctions/G-ApiRequest'
+import {useRecoilState} from 'recoil'
+import {AllHamsters, Defender, Challenger} from './atoms/atoms'
 
 function App() {
 	const [test, setTest] = useState<null|JSX.Element>(null);
 	const [testOn, setTestOn] = useState<boolean>(false);
-	const [allHamsters, setAllHamsters] = useState<null|Hamster[]>(null)
+
+	//FLYTTA UT
+	const [hamsters, setHamsters] = useRecoilState(AllHamsters);
+	const [challenger, setChallenger] = useRecoilState(Challenger);
+	const [defender, setDefender] = useRecoilState(Defender);
 
 	useEffect(() => {
-		GET('/hamsters', setAllHamsters);
+		GET('/hamsters', setHamsters);
+		GET('/hamsters/random', setChallenger);
+		GET('/hamsters/random', setDefender);
+		console.log('GET request gjort!');
 	}, [])
 
-	if (allHamsters) {
-		console.log(allHamsters)
-	}
+
+
 	function firstStart() {
 		localStorage.setItem('first-time', 'false')
 		setTest(<Route path="/"> <MainView /> </Route>);
@@ -26,6 +33,7 @@ function App() {
 		setTestOn(true)
 		setTest(<Route path="/"> <MainView /> </Route>);
 	}
+	
 
 	return (
 		<Router>

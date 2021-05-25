@@ -1,18 +1,18 @@
-import {Hamster} from '../../interfaces/hamster'
+import {HamsterWithId} from '../../interfaces/hamster'
 import './HamsterCard.css'
 interface Props {
-	hamster: Hamster
+	hamster: HamsterWithId
 }
 
-const HamsterCard = () => {
+const HamsterCard = ({hamster}:Props) => {
 	return (
 		<section className="hamster-card-wrapper">
-			<img src={'hamster.imgName'} alt="Pic of a hamster" />
+				<h2>{hamster.name}</h2>
+			<img src={`/img/${hamster.imgName ? hamster.imgName : 'hamster-1.jpg'}`} alt="Pic of a hamster" />
 			<span className="hamster-card-info">
-				<p>{'hamster.name'}</p>
-				<p>{'hamster.age'}</p>
-				<p>{'hamster.loves'}</p>
-				<p>{'hamster.favFood'}</p>
+				<p>Age: {hamster.age}</p>
+				<p>Loves to: {hamster.loves}</p>
+				<p>Favorite food: {hamster.favFood}</p>
 			</span>
 		</section>
 	)

@@ -1,5 +1,6 @@
 import {BrowserRouter as Router, Route, Switch, NavLink} from 'react-router-dom'
 import BattleView from './BattleView'
+import GalleryView from './GalleryView'
 import './MainView.css'
 const MainView = () => {
 	return (
@@ -16,13 +17,16 @@ const MainView = () => {
 						<BattleView />
 					</Route>
 					<Route path="/gallery">
-						Gallery
+						<GalleryView />
 					</Route>
 					<Route path="/statistics">
 						Statistics
 					</Route>
 					<Route path="/history">
 						History
+					</Route>
+					<Route path="/">
+						<BattleView />
 					</Route>
 				</Switch>
 			</main>

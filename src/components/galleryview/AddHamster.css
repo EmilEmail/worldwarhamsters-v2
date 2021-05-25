@@ -1,0 +1,36 @@
+.add-hamster-form {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	background: white;
+	padding: 2em;
+}
+.add-hamster-form h2 {
+	text-align: center;
+}
+.add-hamster-form label {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	text-align: left;
+	margin: 1em;
+}
+.add-hamster-form input {
+	justify-self: right;
+}
+.add-hamster-form button {
+	margin: 1em 1em 0 1em;
+	padding: 1em;
+	justify-self: center;
+	width: 70%;
+}
+
+.wrong-in-input {
+	border: 5px solid red;
+	
+}
+.wrong-in-input span{
+	position: absolute;
+	text-align: right;
+}

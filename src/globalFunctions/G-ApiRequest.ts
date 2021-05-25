@@ -1,16 +1,17 @@
 import {Hamster} from '../interfaces/hamster'
+import { Matches } from '../interfaces/matches';
 
-// export const BASE_URL = 'http://localhost:1337'
-
-
-export async function GET(url:string, setToState:(data:Hamster[]|null)=>void) {
+export async function GET(url:string, setToState:(data:any)=>void) {
 	try {
 		const response = await fetch(url, {method: 'GET'});
 		const data = await response.json();
 		setToState(data);
+		console.log('data from api :', data);
+		
 	} catch (error) {setToState(null)}
 }
-export async function POST(url:string, obj:Hamster) {
+
+export async function POST(url:string, obj:Hamster|Matches) {
 
 	const response = await fetch(url, {
 	method: 'POST',
@@ -21,11 +22,9 @@ export async function POST(url:string, obj:Hamster) {
 	const data = await response.json();
 	console.log(data)
 }
-export async function PUT(url:string, obj:object, id:string) {
-	try {
 
-		///FIXA
-		const getUrl =  + `${url}/${id}`
+export async function PUT(url:string, obj:object) {
+	try {
 		const response = await fetch(url, {
 			method: 'PUT', 
 			body: JSON.stringify(obj),
@@ -38,6 +37,7 @@ export async function PUT(url:string, obj:object, id:string) {
 		console.log(error)
 	}
 }
+
 export async function DELETE(url:string, id:string) {
 	const response = await fetch(url, {method: 'DELETE'});
 	const data = await response.json();

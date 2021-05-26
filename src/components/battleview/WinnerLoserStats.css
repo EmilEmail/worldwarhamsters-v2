@@ -1,0 +1,30 @@
+.winner-loser-stats-wrapper {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: var(--color7);
+	text-align: center;
+}
+.winner-loser-stats-wrapper .winner-loser-stats {
+	display: flex;
+	flex-direction: row;
+	grid-template-rows: auto auto auto;
+	align-items: center;
+	gap: 2em;	
+}
+.winner-loser-stats-wrapper .winner-loser-stats ul {
+	list-style: none;
+	justify-self: center;
+}
+
+.winner-loser-stats-wrapper .winner-loser-stats .stats-against {
+	grid-column: 1/3;
+	display: flex;
+	flex-direction: column;
+}

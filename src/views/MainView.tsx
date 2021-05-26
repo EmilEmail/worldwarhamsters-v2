@@ -1,6 +1,7 @@
 import {BrowserRouter as Router, Route, Switch, NavLink} from 'react-router-dom'
 import BattleView from './BattleView'
 import GalleryView from './GalleryView'
+import StatsView from './StatsView'
 import './MainView.css'
 const MainView = () => {
 	return (
@@ -20,7 +21,7 @@ const MainView = () => {
 						<GalleryView />
 					</Route>
 					<Route path="/statistics">
-						Statistics
+						<StatsView />
 					</Route>
 					<Route path="/history">
 						History

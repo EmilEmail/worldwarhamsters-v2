@@ -19,8 +19,8 @@ function App() {
 	useEffect(() => {
 		GET('/hamsters', setHamsters);
 		GET('/hamsters/random', setChallenger);
-		GET('/hamsters/random', setDefender);
-		console.log('GET request gjort!');
+		GET('/hamsters/random', setDefender); //fixa ifall det blir samma!
+		// console.log('GET request gjort!');
 	}, [])
 
 

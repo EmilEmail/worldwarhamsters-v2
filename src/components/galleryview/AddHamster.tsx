@@ -7,7 +7,6 @@ const AddHamster = () => {
 	const [errorText, setErrorText] = useState<null|string>();
 	const [characterCount, setCharacterCount] = useState<number>(0);
 	const [hamster, setHamster] = useState({name: '', age: 0, loves: '', favFood: '', imgName: '', wins: 0, defeats: 0, games:0});
-
 	function validateName(value:string) {
 		let newHamster = hamster;
 		let currentValue = hamster.name;
@@ -27,8 +26,7 @@ const AddHamster = () => {
 		if (newHamster.name.length < 3 || newHamster.name.length > 32) setWrongName('wrong-color');
 		
 	}
-	function stringBlur() {
-		console.log(hamster.name)
+	function stringBlur(from: string) {
 		if (hamster.name === '') {
 			setWrongName('wrong-in-input')
 			setErrorText('Please enter a name with 3-32 characters')
@@ -43,7 +41,11 @@ const AddHamster = () => {
 		}
 	}
 
-	function setNumber(num: string) {
+	function validateNumber(value:string) {
+		let num = Number(value)
+		let newHamster = hamster;
+		hamster.age = num;
+		setHamster(newHamster)
 	}
 
 	function addNewHamster() {
@@ -58,7 +60,7 @@ const AddHamster = () => {
 				<p>Name:</p>
 				<input 
 					className={wrongName === 'wrong-in-input' ? wrongName : ''} 
-					type="text" onBlur={stringBlur} 
+					type="text" onBlur={() => stringBlur('name')} 
 					onChange={(e) => validateName(e.target.value)}
 					value={hamster.name} 
 				/>
@@ -69,7 +71,10 @@ const AddHamster = () => {
 				</div>
 			</label>
 			<label>Age: 
-				<input type="number" onChange={(e) => setNumber(e.target.value)} />
+				<input
+					type="number" 
+					onChange={(e) => validateNumber(e.target.value)}
+				/>
 			</label>
 			<label>Loves: 
 				<input type="text" />
@@ -80,7 +85,7 @@ const AddHamster = () => {
 			<label>Image Source: 
 				<input type="text" />
 			</label>
-			<button onClick={addNewHamster} >Add new hamster</button>
+			<button disabled={false} onClick={() => addNewHamster()} >Add new hamster</button>
 		</section>
 	)
 }

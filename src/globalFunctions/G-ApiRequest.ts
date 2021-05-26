@@ -1,10 +1,12 @@
-import {Hamster} from '../interfaces/hamster'
+import {Hamster, HamsterWithId} from '../interfaces/hamster'
 import { Matches } from '../interfaces/matches';
+
+type allHamsters = null|HamsterWithId[]|HamsterWithId;
 
 export async function GET(url:string, setToState:(data:any)=>void) {
 	try {
 		const response = await fetch(url, {method: 'GET'});
-		const data = await response.json();
+		const data: allHamsters = await response.json();
 		setToState(data);
 		console.log('data from api :', data);
 		
@@ -30,7 +32,7 @@ export async function PUT(url:string, obj:object) {
 			body: JSON.stringify(obj),
 			headers: {"Content-type": "application/json; charset=UTF-8"}
 		});
-		const data = await response.json();
+		const data = await response.text();
 		console.log(data)
 		
 	} catch (error) {

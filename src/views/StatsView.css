@@ -1,0 +1,10 @@
+.stats-view-wrapper {
+	display: flex;
+	flex-direction: column;
+}
+.stats-list-wrapper {
+	display: flex;
+}
+.stats-list-wrapper ul {
+	list-style: none;
+}

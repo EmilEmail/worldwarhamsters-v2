@@ -3,7 +3,11 @@ import BattleView from './BattleView'
 import GalleryView from './GalleryView'
 import StatsView from './StatsView'
 import './MainView.css'
+import StartPage from './StartPage'
 const MainView = () => {
+	function test() {
+		alert()
+	}
 	return (
 		<Router>
 		<div className="main-wrapper">
@@ -27,7 +31,7 @@ const MainView = () => {
 						History
 					</Route>
 					<Route path="/">
-						<BattleView />
+						<StartPage firstStart={() => test()} />
 					</Route>
 				</Switch>
 			</main>

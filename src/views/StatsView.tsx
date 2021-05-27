@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import HamsterList from '../components/statsview/HamsterList'
 import { GET } from '../globalFunctions/G-ApiRequest';
 import { HamsterWithId } from '../interfaces/hamster';
+import './StatsView.css'
 const StatsView = () => {
-	const [mostWins, setMostWins] = useState<null|HamsterWithId[]>(null)
-	const [mostDefeats, setMostDefeats] = useState<null|HamsterWithId[]>(null)
+	const [mostWins, setMostWins] = useState<HamsterWithId[]|null>(null)
+	const [mostDefeats, setMostDefeats] = useState<HamsterWithId[]|null>(null)
 	useEffect(() => {
 		GET('/winners', setMostWins);
 		GET('/losers', setMostDefeats);
@@ -13,8 +14,10 @@ const StatsView = () => {
 	return (
 		<section className="stats-view-wrapper">
 			<h2>TOP 5</h2>
-			<HamsterList hamsterList={mostWins} />
-			<HamsterList hamsterList={mostDefeats} />
+			<div className="stats-list-wrapper">
+				<HamsterList hamsterList={mostWins} />
+				<HamsterList hamsterList={mostDefeats} />
+			</div>
 		</section>
 	)
 }

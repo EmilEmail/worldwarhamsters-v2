@@ -1,21 +1,29 @@
 import './BattleView.css'
 import HamsterCard from '../components/battleview/HamsterCard'
-import {Defender, Challenger} from '../atoms/atoms'
+import {Defender, Challenger, AllHamsters} from '../atoms/atoms'
 import { useRecoilState } from 'recoil';
 import { HamsterWithId } from '../interfaces/hamster';
-import { POST, PUT } from '../globalFunctions/G-ApiRequest';
-import { useState } from 'react';
+import { getAllHamsters, getRandomHamsters, postMatch, putHamster } from '../globalFunctions/G-ApiRequest';
+import { useEffect, useState } from 'react';
 import WinnerLoserStats from '../components/battleview/WinnerLoserStats'
+import DefaultButton from '../components/DefaultButton';
+import { promises } from 'fs';
 const BattleView = () => {
-	const [defender] = useRecoilState(Defender)
-	const [challenger] = useRecoilState(Challenger)
-	// const [haveWon, setHaveWon] = useState<null|HamsterWithId>(null);
-	// const [loser, setLoser] = useState<null|HamsterWithId>(null);
+	const [defender, setDefender] = useRecoilState(Defender)
+	const [challenger, setChallenger] = useRecoilState(Challenger)
+	const [hamsters, setHamsters] = useRecoilState(AllHamsters)
 	const [stats, setStats] = useState<null|JSX.Element>(null);
 
-	function selectedWinner(winner:HamsterWithId, loser:HamsterWithId) {
-		const winnerURL = `/hamsters/${winner.firestoreId}`
-		const loserURL = `/hamsters/${loser.firestoreId}`
+	useEffect(() => {
+		getRandomHamsters(setDefender);
+		getRandomHamsters(setChallenger);
+	},[setDefender, setChallenger])
+	if (challenger.firestoreId === defender.firestoreId) {
+		getRandomHamsters(setChallenger);
+	}
+
+	async function selectedWinner(winner:HamsterWithId, loser:HamsterWithId) {
+
 		const winnerToDb = {
 			wins: winner.wins + 1,
 			games: winner.games + 1	
@@ -29,37 +37,42 @@ const BattleView = () => {
 			loserId: loser.firestoreId
 		}
 
+		/////fiiiiixaaaaa
 		setStats(
-		<WinnerLoserStats closeStats={newBattle}  winner={winner} loser={loser} />
+			<div className="loadbar"><h2>Loading...</h2></div>
 		)
-		PUT(winnerURL, winnerToDb);
-		PUT(loserURL, loserToDb);
-		POST(`/matches`, match)
-
-		// TODO: göra post till /matches
+		await putHamster(winner.firestoreId, winnerToDb)
+		await putHamster(loser.firestoreId, loserToDb)
+		await postMatch(match)
+		await getAllHamsters(setHamsters)
+		
+		setStats(
+			<WinnerLoserStats closeStats={newBattle} loadbar={false}  winnerId={winner.firestoreId} loserId={loser.firestoreId} />
+		)
 	}
 
 function newBattle() {
 	setStats(null)
-	//start a new fight!
+	getRandomHamsters(setChallenger);
+	getRandomHamsters(setDefender);
 }
 
 
 	return (
 			<div className="battle-view">
 				{stats}
-				<h2 className="blinking-header">Click to choose the winner...</h2>
+		
 				<section className="battle-section">
-					<div onClick={() => selectedWinner(defender, challenger)}>
+					<div className="battle-div">
 						<HamsterCard hamster={defender} gameScore={false} />
+						<DefaultButton clicked={() => selectedWinner(defender, challenger)} buttonText="Pick winner" />
 					</div>
-					<p>VS</p>
-					<div onClick={() => selectedWinner(challenger, defender)}>
+					<h2>VS</h2>
+					<div className="battle-div" >
 						<HamsterCard hamster={challenger} gameScore={false} />
+						<DefaultButton clicked={() => selectedWinner(challenger, defender)} buttonText="Pick winner" />
 					</div>
 				</section>
-
-				
 			</div> 
 	)
 }

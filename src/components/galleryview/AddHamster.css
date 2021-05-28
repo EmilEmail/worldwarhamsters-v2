@@ -19,6 +19,9 @@
 }
 .add-hamster-form input {
 	justify-self: right;
+	border-radius: 1em;
+	outline: none;
+	padding: 0.4em 0.8em;
 }
 .add-hamster-form button {
 	margin: 1em 1em 0 1em;
@@ -28,7 +31,7 @@
 }
 
 .wrong-in-input {
-	border: 5px solid red;
+	border: 1px solid red;
 	
 }
 .add-hamster-form label div{

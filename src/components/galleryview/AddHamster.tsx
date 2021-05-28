@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { POST } from '../../globalFunctions/G-ApiRequest'
+import { useState } from 'react'
+import { postHamster } from '../../globalFunctions/G-ApiRequest'
 import './AddHamster.css'
 
 const AddHamster = () => {
@@ -49,8 +49,7 @@ const AddHamster = () => {
 	}
 
 	function addNewHamster() {
-		const url = '/hamsters'
-		POST(url, hamster)
+		postHamster(hamster);
 	}
 
 	return (

@@ -1,14 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { AllHamsters } from '../atoms/atoms';
 import HamsterCard from '../components/battleview/HamsterCard';
 import { HamsterWithId } from '../interfaces/hamster';
 import './GalleryView.css';
 import AddHamster from '../components/galleryview/AddHamster'
+import DefaultButton from '../components/DefaultButton';
 const GalleryView = () => {
 	const [allHamsters] = useRecoilState(AllHamsters);
 	const [page, setPage] = useState<number>(0);
 	const [addHamster, setAddHamster] = useState<null|JSX.Element>(null);
+	const [hamsterCard, setHamsterCard] = useState<null|JSX.Element>(null);
 	// let hamstersJSX: JSX.Element[] = [];
 	let AllHamstersInPages: HamsterWithId[][] = [];
 	let hamsterPage: HamsterWithId[] = [];
@@ -48,21 +50,37 @@ const GalleryView = () => {
 		console.log(page)
 	}
 
+	function showHamsterCard(hamster:HamsterWithId) {
+		setHamsterCard((
+			<div className="hamster-card-single" onClick={() => setHamsterCard(null)}>
+				<HamsterCard gameScore={true} hamster={hamster} ></HamsterCard>
+			</div>
+		))
+	}
+
 	return (
-		<section >
-			<button onClick={toggleAddHamster}>Lägg till en ny hamster</button>
+		<section className="gallery-view">
 			{addHamster}
-			<section className="gallery-view">
+			{hamsterCard}
+
+			<section className="gallery-add-button">
+				<DefaultButton clicked={toggleAddHamster} buttonText={'Lägg till en ny hamster'} />
+			</section>
+
+			<section className="gallery-items">
 				{AllHamstersInPages.length > 0 ? AllHamstersInPages[page].map(hamster => (
-					<section className="small-hamster-card" key={hamster.firestoreId}>
-						<p>Name: {hamster.name}</p>
+					<section className="small-hamster-card" key={hamster.firestoreId} onClick={() => showHamsterCard(hamster)}>
+						<h3>{hamster.name}</h3>
 						<img src={`/img/${hamster.imgName}`} alt="" />
 					</section>
 				)) : 'Loading...'}
 			</section>
-			<button onClick={currentPage}>current page</button>
-			{page + 1} / {AllHamstersInPages.length}
-			<button onClick={nextPage}>next page</button>
+
+			<section className="gallery-pagination">
+				<DefaultButton clicked={currentPage} buttonText={'<'} />
+				<h2 className="gallery-page">{page + 1} / {AllHamstersInPages.length}</h2>
+				<DefaultButton clicked={nextPage} buttonText={'>'} />
+			</section>
 		</section>
 	)
 }

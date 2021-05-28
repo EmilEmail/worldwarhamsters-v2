@@ -1,20 +1,64 @@
 import {Hamster, HamsterWithId} from '../interfaces/hamster'
-import { Matches } from '../interfaces/matches';
+import { Matches, MatchesWithId } from '../interfaces/matches';
 
-type allHamsters = null|HamsterWithId[]|HamsterWithId;
-
-export async function GET(url:string, setToState:(data:any)=>void) {
+export async function getAllHamsters(setToState:(data:any)=>void) {
+	const url = '/hamsters'
 	try {
 		const response = await fetch(url, {method: 'GET'});
-		const data: allHamsters = await response.json();
+		const data = await response.json();
 		setToState(data);
-		console.log('data from api :', data);
 		
 	} catch (error) {setToState(null)}
 }
+export async function getHamsterWinners(setToState:(data:any)=>void) {
+	const url = '/winners'
+	try {
+		const response = await fetch(url, {method: 'GET'});
+		const data = await response.json();
+		setToState(data);
+		
+	} catch (error) {setToState(null)}
+}
+export async function getHamsterLosers(setToState:(data:any)=>void) {
+	const url = '/losers'
+	try {
+		const response = await fetch(url, {method: 'GET'});
+		const data = await response.json();
+		setToState(data);
+		
+	} catch (error) {setToState(null)}
+}
+export async function getRandomHamsters(setToState:(data:any)=>void) {
+	const url = '/hamsters/random'
+	try {
+		const response = await fetch(url, {method: 'GET'});
+		const data: HamsterWithId = await response.json();
+		setToState(data);
 
-export async function POST(url:string, obj:Hamster|Matches) {
+	} catch (error) {setToState(null)}
+}
+export async function getHamster(id:string, setToState:(data:any)=>void) {
+	const url = `/hamsters/${id}`;
+	try {
+		const response = await fetch(url, {method: 'GET'});
+		const data: HamsterWithId = await response.json();
+		setToState(data);
 
+	} catch (error) {setToState(null)}
+}
+export async function getMatchBetween(id1:string, id2:string, setToState:(data:any)=>void) {
+	const url = ` /score/${id1}/${id2}`;
+	try {
+		const response = await fetch(url, {method: 'GET'});
+		const data: MatchesWithId = await response.json();
+		setToState(data);
+
+	} catch (error) {setToState(null)}
+}
+
+
+export async function postHamster(obj:Hamster) {
+	const url = `/hamsters`;
 	const response = await fetch(url, {
 	method: 'POST',
 	body: JSON.stringify(obj),
@@ -24,8 +68,20 @@ export async function POST(url:string, obj:Hamster|Matches) {
 	const data = await response.json();
 	console.log(data)
 }
+export async function postMatch(obj:Matches) {
+	const url = `/matches`;
+	const response = await fetch(url, {
+	method: 'POST',
+	body: JSON.stringify(obj),
+    headers: {"Content-type": "application/json; charset=UTF-8"}	
+	});
 
-export async function PUT(url:string, obj:object) {
+	const data = await response.text();
+	console.log(data);
+}
+
+export async function putHamster(id:string, obj:object) {
+	const url = `/hamsters/${id}`;
 	try {
 		const response = await fetch(url, {
 			method: 'PUT', 
@@ -40,8 +96,9 @@ export async function PUT(url:string, obj:object) {
 	}
 }
 
-export async function DELETE(url:string, id:string) {
+export async function DELETE(id:string) {
+	const url = `/hamsters/${id}`;
 	const response = await fetch(url, {method: 'DELETE'});
 	const data = await response.json();
-	console.log(data)
+	return data;
 }

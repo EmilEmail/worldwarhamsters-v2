@@ -11,7 +11,7 @@ const HamsterList = ({hamsterList}:Props) => {
 
 	if (hamsterList && !list) {
 		setList(hamsterList.map((hamster) => (
-			<li>{hamster.name}</li>
+			<li key={hamster.firestoreId}>{hamster.name}</li>
 		)))
 	}
 

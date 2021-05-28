@@ -4,15 +4,15 @@ import {HamsterWithId} from '../interfaces/hamster'
 
 const AllHamsters = atom({
 	key: 'allHamsters',
-	default: <HamsterWithId[]>[]
+	default: [] as HamsterWithId[]
 });
 const Challenger = atom({
 	key: 'challenger',
-	default: <HamsterWithId>{}
+	default: {} as HamsterWithId
 });
 const Defender = atom({
 	key: 'defender',
-	default: <HamsterWithId>{}
+	default: {} as HamsterWithId
 });
 
 export {AllHamsters, Challenger, Defender} 

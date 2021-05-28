@@ -1,12 +1,44 @@
 .gallery-view {
+	display: flex;
+	flex-direction: column;
+}
+
+.gallery-items {
 	display: grid;
-	grid-template-columns: repeat(5, 1fr);
+	grid-template-columns: repeat(5, 8em);
+	grid-template-rows: repeat(2, 10em);
 	gap: 2em;
 	max-height: 50vh;
 	text-align: center;
 }
-.gallery-view img {
-	max-width: 100px;
-	min-height: 75px;
+.gallery-items img {
+	width: 100%;
+	max-height: 7em;
 	border-radius: 2em;
+	object-fit: cover;
+}
+
+.gallery-pagination, .gallery-add-button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 2em;
+}
+
+.gallery-page {
+	font-size: 2em;
+	margin: 0 1em 0 1em;
+}
+
+.hamster-card-single {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: var(--color7);
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }

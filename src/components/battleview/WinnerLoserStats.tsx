@@ -1,42 +1,71 @@
+import { useEffect, useState } from "react"
+import { getHamster, getMatchBetween } from "../../globalFunctions/G-ApiRequest"
 import { HamsterWithId } from "../../interfaces/hamster"
 import DefaultButton from "../DefaultButton"
 import HamsterCard from "./HamsterCard"
 import './WinnerLoserStats.css'
-import { useHistory } from "react-router-dom"
 
 interface Props {
-	winner:HamsterWithId,
-	loser:HamsterWithId,
+	winnerId: string
+	loserId: string
 	closeStats: () => void
+	loadbar: boolean
 }
 
-const WinnerLoserStats = ({winner, loser, closeStats}:Props) => {
-	const history = useHistory()
-
+const WinnerLoserStats = ({loadbar, winnerId, loserId, closeStats}:Props) => {
+	const [winner, setWinner] = useState<HamsterWithId|any>()
+	const [loser, setLoser] = useState<HamsterWithId|any>()
+	const [matches, setMatches] = useState<any>()
+useEffect(() => {
+	if(winnerId && loserId) {
+		getHamster(winnerId, setWinner)
+		getHamster(loserId, setLoser)
+		getMatchBetween(winnerId, loserId, setMatches)
+	}
+}, [winnerId, loserId])
 	function reloadBattle() {
-		// history.push('/battle');
 		closeStats()
 	}
-	return (
+	if(matches) {
+		console.log(matches)
+	}
+
+
+
+	let JSX:JSX.Element;
+	
+	if (winner && loser && matches && loadbar) JSX = (
 		<section className="winner-loser-stats-wrapper">
 			<div className="winner-loser-stats">
 				<div>
 					<h3>WINNER</h3>
-					<HamsterCard hamster={winner} gameScore={true} />
-					<h2>fixa</h2>
+					<div className="matches-border">
+						<HamsterCard hamster={winner} gameScore={true} />
+					</div>
+					<h2 className="matches-between-score">{matches.challengerWins}</h2>
 				</div>
-				<div>
+				<div className="matches-between">
 					<h3>Games between</h3>
-					<h2>Fixa</h2>
+					<h2 className="matches-between-score none-border">{matches.challengerWins + matches.defenderWins}</h2>
 				</div>
 				<div>
 					<h3>LOSER</h3>
-					<HamsterCard hamster={loser} gameScore={true} />
-					<h2>fixa</h2>
+					<div className="matches-border">
+						<HamsterCard hamster={loser} gameScore={true} />
+					</div>
+					<h2 className="matches-between-score">{matches.defenderWins}</h2>
 				</div>
-				<DefaultButton buttonText="New Battle" clicked={reloadBattle} />
 			</div>
+
+			<DefaultButton buttonText="Play again" clicked={reloadBattle} />
+
 		</section>
+	)
+	else JSX = (<section className="winner-loser-stats-wrapper"><h2>Loading...</h2></section>)
+	return (
+		<div>
+			{JSX}
+		</div>
 	)
 }
 

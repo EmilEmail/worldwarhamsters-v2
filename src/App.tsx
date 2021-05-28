@@ -1,35 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import {BrowserRouter as Router, NavLink, Route, Switch} from 'react-router-dom'
 import './App.css';
 import StartPage from './views/StartPage';
-import MainView from './views/MainView'
-import {GET} from './globalFunctions/G-ApiRequest'
+import {getAllHamsters} from './globalFunctions/G-ApiRequest'
 import {useRecoilState} from 'recoil'
-import {AllHamsters, Defender, Challenger} from './atoms/atoms'
+import {AllHamsters} from './atoms/atoms'
 import BattleView from './views/BattleView';
 import GalleryView from './views/GalleryView';
 import StatsView from './views/StatsView';
 import HistoryView from './views/HistoryView';
 
 function App() {
-	const [test, setTest] = useState<null|JSX.Element>(null);
-	const [testOn, setTestOn] = useState<boolean>(false);
-
-	//FLYTTA UT
 	const [hamsters, setHamsters] = useRecoilState(AllHamsters);
-	const [challenger, setChallenger] = useRecoilState(Challenger);
-	const [defender, setDefender] = useRecoilState(Defender);
 
 	useEffect(() => {
-		GET('/hamsters', setHamsters);
-		GET('/hamsters/random', setChallenger);
-		GET('/hamsters/random', setDefender); //fixa ifall det blir samma!
-		// console.log('GET request gjort!');
-	}, [])
-	
-	function testes() {
-		alert()
-	}
+		getAllHamsters(setHamsters);
+	}, [setHamsters])
 
 	return (
 		<Router>
@@ -55,7 +41,7 @@ function App() {
 							<HistoryView />
 						</Route>
 						<Route path="/">
-							<StartPage firstStart={() => testes()} />
+							<StartPage />
 						</Route>
 					</Switch>
 				</main>

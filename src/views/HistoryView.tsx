@@ -1,5 +1,3 @@
-import { GET } from "../globalFunctions/G-ApiRequest";
-
 const HistoryView = () => {
 
 	return (

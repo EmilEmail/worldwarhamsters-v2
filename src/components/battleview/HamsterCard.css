@@ -2,15 +2,13 @@
 	display: flex;
 	flex-direction: column;
 	text-align: center;
-	background: radial-gradient(transparent, var(--color2));
+	background: var(--color6);
 	padding: 16px;
 	border-radius: 2em;
 	transition: all 1s;
+	color: var(--color7);
 }
-.hamster-card-wrapper:hover {
-	background: radial-gradient(var(--color1), var(--color2));
-	cursor: pointer;
-}
+
 .hamster-card-wrapper img {
 	width: 300px;
 	height: 200px;

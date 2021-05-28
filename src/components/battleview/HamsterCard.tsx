@@ -33,6 +33,7 @@ const HamsterCard = ({hamster, gameScore}:Props) => {
 					<p>Age: {hamster.age}</p>
 					<p>Loves to: {hamster.loves}</p>
 					<p>Favorite food: {hamster.favFood}</p>
+					<p>Games: {hamster.games}</p>
 				</span>
 			</section>
 

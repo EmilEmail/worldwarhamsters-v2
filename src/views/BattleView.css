@@ -1,23 +1,32 @@
+.battle-view {
+	display: grid;
+	grid-template-rows: 1fr;
+	height: 100%;
+}
 .battle-section {
 	display: flex;
-	justify-content: center;
 	align-items: center;
 	gap: 4em;
+	height:100%;
+}
+.battle-div {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	gap: 2em;
+	transition: all 1s;
 }
 
-.blinking-header {
-	text-align: center;
-	position: relative;
-	top: -2em;
-	animation: blinking 2s infinite ease-out;
+.loadbar {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
 }
 
-@keyframes blinking {
-	0% {color: var(--color7)}
-	50% {color: transparent}
-	100% {color: var(--color7)}
-	
-}
 
 @media only screen and (max-width: 600px) {
 	.battle-view {

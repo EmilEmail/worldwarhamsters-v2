@@ -19,3 +19,8 @@ export interface Hamster {
 	wins:number, 
 	defeats:number
 }
+export interface HamsterWinsId {
+	firestoreId: string
+	loserId: string
+	winnerId: string
+}

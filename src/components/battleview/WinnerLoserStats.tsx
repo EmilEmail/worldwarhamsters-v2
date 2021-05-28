@@ -9,10 +9,9 @@ interface Props {
 	winnerId: string
 	loserId: string
 	closeStats: () => void
-	loadbar: boolean
 }
 
-const WinnerLoserStats = ({loadbar, winnerId, loserId, closeStats}:Props) => {
+const WinnerLoserStats = ({winnerId, loserId, closeStats}:Props) => {
 	const [winner, setWinner] = useState<HamsterWithId|any>()
 	const [loser, setLoser] = useState<HamsterWithId|any>()
 	const [matches, setMatches] = useState<any>()
@@ -23,44 +22,41 @@ useEffect(() => {
 		getMatchBetween(winnerId, loserId, setMatches)
 	}
 }, [winnerId, loserId])
-	function reloadBattle() {
-		closeStats()
-	}
-	if(matches) {
-		console.log(matches)
-	}
 
 
 
 	let JSX:JSX.Element;
 	
-	if (winner && loser && matches && loadbar) JSX = (
-		<section className="winner-loser-stats-wrapper">
-			<div className="winner-loser-stats">
-				<div>
-					<h3>WINNER</h3>
-					<div className="matches-border">
-						<HamsterCard hamster={winner} gameScore={true} />
+	if (winner && loser && matches) {
+		JSX = (
+			<section className="winner-loser-stats-wrapper">
+				<div className="winner-loser-stats">
+					<div>
+						<h3>WINNER</h3>
+						<div className="matches-border">
+							<HamsterCard hamster={winner} gameScore={true} />
+						</div>
+						<h2 className="matches-between-score">{matches.challengerWins}</h2>
 					</div>
-					<h2 className="matches-between-score">{matches.challengerWins}</h2>
-				</div>
-				<div className="matches-between">
-					<h3>Games between</h3>
-					<h2 className="matches-between-score none-border">{matches.challengerWins + matches.defenderWins}</h2>
-				</div>
-				<div>
-					<h3>LOSER</h3>
-					<div className="matches-border">
-						<HamsterCard hamster={loser} gameScore={true} />
+					<div className="matches-between">
+						<h3>Games between</h3>
+						<h2 className="matches-between-score none-border">{matches.challengerWins + matches.defenderWins}</h2>
 					</div>
-					<h2 className="matches-between-score">{matches.defenderWins}</h2>
+					<div>
+						<h3>LOSER</h3>
+						<div className="matches-border">
+							<HamsterCard hamster={loser} gameScore={true} />
+						</div>
+						<h2 className="matches-between-score">{matches.defenderWins}</h2>
+					</div>
 				</div>
-			</div>
-
-			<DefaultButton buttonText="Play again" clicked={reloadBattle} />
-
-		</section>
-	)
+	
+				<DefaultButton buttonText="Play again" clicked={closeStats} />
+	
+			</section>
+		)
+	}
+	
 	else JSX = (<section className="winner-loser-stats-wrapper"><h2>Loading...</h2></section>)
 	return (
 		<div>

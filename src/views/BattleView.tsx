@@ -7,7 +7,6 @@ import { getAllHamsters, getRandomHamsters, postMatch, putHamster } from '../glo
 import { useEffect, useState } from 'react';
 import WinnerLoserStats from '../components/battleview/WinnerLoserStats'
 import DefaultButton from '../components/DefaultButton';
-import { promises } from 'fs';
 const BattleView = () => {
 	const [defender, setDefender] = useRecoilState(Defender)
 	const [challenger, setChallenger] = useRecoilState(Challenger)
@@ -36,18 +35,15 @@ const BattleView = () => {
 			winnerId: winner.firestoreId,
 			loserId: loser.firestoreId
 		}
-
-		/////fiiiiixaaaaa
+		setStats(<div className="loadbar"><h2>...</h2></div>)
+		await Promise.all([
+			putHamster(winner.firestoreId, winnerToDb),
+			putHamster(loser.firestoreId, loserToDb),
+			postMatch(match),
+			getAllHamsters(setHamsters)
+		])
 		setStats(
-			<div className="loadbar"><h2>Loading...</h2></div>
-		)
-		await putHamster(winner.firestoreId, winnerToDb)
-		await putHamster(loser.firestoreId, loserToDb)
-		await postMatch(match)
-		await getAllHamsters(setHamsters)
-		
-		setStats(
-			<WinnerLoserStats closeStats={newBattle} loadbar={false}  winnerId={winner.firestoreId} loserId={loser.firestoreId} />
+			<WinnerLoserStats closeStats={newBattle} winnerId={winner.firestoreId} loserId={loser.firestoreId} />
 		)
 	}
 

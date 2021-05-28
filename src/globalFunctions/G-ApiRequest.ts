@@ -1,4 +1,4 @@
-import {Hamster, HamsterWithId} from '../interfaces/hamster'
+import {Hamster, HamsterWinsId, HamsterWithId} from '../interfaces/hamster'
 import { Matches, MatchesWithId } from '../interfaces/matches';
 
 export async function getAllHamsters(setToState:(data:any)=>void) {
@@ -10,6 +10,7 @@ export async function getAllHamsters(setToState:(data:any)=>void) {
 		
 	} catch (error) {setToState(null)}
 }
+
 export async function getHamsterWinners(setToState:(data:any)=>void) {
 	const url = '/winners'
 	try {
@@ -19,6 +20,7 @@ export async function getHamsterWinners(setToState:(data:any)=>void) {
 		
 	} catch (error) {setToState(null)}
 }
+
 export async function getHamsterLosers(setToState:(data:any)=>void) {
 	const url = '/losers'
 	try {
@@ -28,6 +30,7 @@ export async function getHamsterLosers(setToState:(data:any)=>void) {
 		
 	} catch (error) {setToState(null)}
 }
+
 export async function getRandomHamsters(setToState:(data:any)=>void) {
 	const url = '/hamsters/random'
 	try {
@@ -37,6 +40,7 @@ export async function getRandomHamsters(setToState:(data:any)=>void) {
 
 	} catch (error) {setToState(null)}
 }
+
 export async function getHamster(id:string, setToState:(data:any)=>void) {
 	const url = `/hamsters/${id}`;
 	try {
@@ -46,12 +50,24 @@ export async function getHamster(id:string, setToState:(data:any)=>void) {
 
 	} catch (error) {setToState(null)}
 }
+
 export async function getMatchBetween(id1:string, id2:string, setToState:(data:any)=>void) {
 	const url = ` /score/${id1}/${id2}`;
 	try {
 		const response = await fetch(url, {method: 'GET'});
 		const data: MatchesWithId = await response.json();
 		setToState(data);
+
+	} catch (error) {setToState(null)}
+}
+
+export async function getMatchWinners(id:string, setToState:(data:any)=>void) {
+	const url = `/matchwinners/${id}`;
+	try {
+		const response = await fetch(url, {method: 'GET'});
+		const data: HamsterWinsId[] = await response.json();
+		setToState(data);
+		console.log(data);
 
 	} catch (error) {setToState(null)}
 }

@@ -4,7 +4,26 @@ import {HamsterWithId} from '../interfaces/hamster'
 
 const AllHamsters = atom({
 	key: 'allHamsters',
-	default: [] as HamsterWithId[]
+	default: [{
+		name: 'Test',
+		age: 3,
+		loves: 'testing',
+		favFood: 'testing',
+		wins: 3,
+		defeats: 4,
+		games: 7,
+		firestoreId: 'testing...'
+	},
+	{
+		name: 'Test',
+		age: 3,
+		loves: 'testing',
+		favFood: 'testing',
+		wins: 3,
+		defeats: 4,
+		games: 7,
+		firestoreId: 'test..'
+	}] as HamsterWithId[]
 });
 const Challenger = atom({
 	key: 'challenger',

@@ -6,14 +6,12 @@ import { HamsterWinsId, HamsterWithId } from '../interfaces/hamster';
 import './GalleryView.css';
 import AddHamster from '../components/galleryview/AddHamster'
 import DefaultButton from '../components/DefaultButton';
-import { getHamster, getMatchWinners } from '../globalFunctions/G-ApiRequest';
 import HamsterWins from '../components/galleryview/hamsterWins';
 const GalleryView = () => {
 	const [allHamsters] = useRecoilState(AllHamsters);
 	const [page, setPage] = useState<number>(0);
 	const [addHamster, setAddHamster] = useState<null|JSX.Element>(null);
 	const [hamsterCard, setHamsterCard] = useState<null|JSX.Element>(null);
-	const [hamsterWinsId, setHamsterWinsId] = useState<null|HamsterWinsId[] | any>(null);
 
 	let AllHamstersInPages: HamsterWithId[][] = [];
 	let hamsterPage: HamsterWithId[] = [];
@@ -54,13 +52,13 @@ const GalleryView = () => {
 	}
 
 	async function showHamsterCard(hamster:HamsterWithId) {
-		await getMatchWinners(hamster.firestoreId, setHamsterWinsId).then((value) => {
-			setHamsterCard((
-				<div className="hamster-card-single" onClick={() => setHamsterCard(null)}>
-					<HamsterCard gameScore={true} hamster={hamster} />
-				</div>
-			))
-		  });
+
+		setHamsterCard((
+			<div className="hamster-card-single" onClick={() => setHamsterCard(null)}>
+				<HamsterCard gameScore={true} hamster={hamster} />
+				<HamsterWins hamsterId={hamster.firestoreId} />
+			</div>
+		))
 	}
 
 	return (

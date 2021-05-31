@@ -1,90 +1,91 @@
 import { useState } from 'react'
-import { postHamster } from '../../globalFunctions/G-ApiRequest'
 import './AddHamster.css'
 
 const AddHamster = () => {
 	const [wrongName, setWrongName] = useState<null|string>();
 	const [errorText, setErrorText] = useState<null|string>();
 	const [characterCount, setCharacterCount] = useState<number>(0);
-	const [hamster, setHamster] = useState({name: '', age: 0, loves: '', favFood: '', imgName: '', wins: 0, defeats: 0, games:0});
-	function validateName(value:string) {
-		let newHamster = hamster;
-		let currentValue = hamster.name;
-		newHamster.name = value;
-		newHamster.name.split('').forEach(ch => {
+	const [name, setName] = useState('');
+	const [age, setAge] = useState(0);
+	const [loves, setLoves] = useState('');
+	const [favFood, setFavFood] = useState('');
+	const [imgSrc, setImgSrc] = useState('');
+
+	function validateName(event:any) {
+		let newName:string = event.target.value;
+		let currentValue = name
+		newName.split('').forEach(char => {
 			let str = 'abcdefghijklmnopqrstuvwyz ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-			if (str.split('').includes(ch)) {
-				newHamster.name = value;
+			if (str.split('').includes(char)) {
+				newName = newName;
 			}
-			else newHamster.name = currentValue
+			else newName = currentValue;
 		});
 
-		setHamster(newHamster);
+		setName(newName);
 		setWrongName(null)
 		setErrorText(null)
-		setCharacterCount(newHamster.name.length)
-		if (newHamster.name.length < 3 || newHamster.name.length > 32) setWrongName('wrong-color');
+		setCharacterCount(newName.length)
+		if (newName.length < 3 || newName.length > 32) setWrongName('wrong-color');
 		
 	}
-	function stringBlur(from: string) {
-		if (hamster.name === '') {
-			setWrongName('wrong-in-input')
-			setErrorText('Please enter a name with 3-32 characters')
-		}
-		else if (hamster.name.length < 3) {
-			setWrongName('wrong-in-input')
-			setErrorText('Please enter a name with 3-32 characters')
-		}
-		else if (hamster.name.length > 32) {
-			setWrongName('wrong-in-input')
-			setErrorText('Please enter a name with 3-32 characters')
-		}
+
+	function validateAge(event:any) {
+		let num = event.target.value
+		if (num > 9999 || Number(num) === NaN) return; ////Skriv ut något
+		setAge(Math.floor(num));
 	}
 
-	function validateNumber(value:string) {
-		let num = Number(value)
-		let newHamster = hamster;
-		hamster.age = num;
-		setHamster(newHamster)
+	function validateLoves(event:any) {
+		const loves = event.target.value;
+		if (loves.length > 32) return  ////Skriv ut något
+		setLoves(loves);
+	}
+	function validateFavFood(event:any) {
+		const value = event.target.value;
+		if (value.length > 32) return  ////Skriv ut något
+		setFavFood(value);
+	}
+	function validateImgSrc(event:any) {
+		let value = event.target.value;
+		setImgSrc(value);
 	}
 
-	function addNewHamster() {
-		postHamster(hamster);
-	}
 
 	return (
-		<section className="add-hamster-form">
-			<h2>Add New Hamster</h2>
-			<label>
-				<p>Name:</p>
-				<input 
-					className={wrongName === 'wrong-in-input' ? wrongName : ''} 
-					type="text" onBlur={() => stringBlur('name')} 
-					onChange={(e) => validateName(e.target.value)}
-					value={hamster.name} 
-				/>
-				<div>
-					<p className={wrongName === 'wrong-color' ? 'wrong-color' : ''}>
-						{errorText} ({characterCount})
-					</p>
-				</div>
-			</label>
-			<label>Age: 
-				<input
-					type="number" 
-					onChange={(e) => validateNumber(e.target.value)}
-				/>
-			</label>
-			<label>Loves: 
-				<input type="text" />
-			</label>
-			<label>Favorite Food: 
-				<input type="text" />
-			</label>
-			<label>Image Source: 
-				<input type="text" />
-			</label>
-			<button disabled={false} onClick={() => addNewHamster()} >Add new hamster</button>
+		<section className="add-hamster-overlay">
+			<section className="add-hamster-form">
+				<h2>Add New Hamster</h2>
+				<label>
+					<p>Name:</p>
+					<input 
+						onChange={validateName}
+						value={name} 
+					/>
+					<div>
+						<p className={wrongName === 'wrong-color' ? 'wrong-color' : ''}>
+							{errorText} ({characterCount})
+						</p>
+					</div>
+				</label>
+				<label>Age: 
+					<input
+						type="number" 
+						onChange={validateAge}
+						value={age}
+					/>
+				</label>
+				<label>Loves: 
+					<input type="text" onChange={validateLoves} value={loves} />
+				</label>
+				<label>Favorite Food: 
+					<input type="text" onChange={validateFavFood} value={favFood} />
+				</label>
+				<label>Image Source: 
+					<input type="text" onChange={validateImgSrc} value={imgSrc} />
+				</label>
+				<button disabled={true} >Add new hamster</button>
+			</section>
 		</section>
 	)
 }

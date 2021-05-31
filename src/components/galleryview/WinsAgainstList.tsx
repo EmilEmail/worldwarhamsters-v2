@@ -10,7 +10,7 @@ const LostAgainstList= ({id}:Props) => {
 
 	useEffect(() => {
 		getHamster(id, setHamster);
-	}, []);
+	}, [id]);
 
 	return (
 		<div>

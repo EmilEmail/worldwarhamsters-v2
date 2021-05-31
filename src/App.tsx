@@ -14,9 +14,9 @@ import DefaultButton from './components/DefaultButton';
 function App() {
 	const [hamsters, setHamsters] = useRecoilState(AllHamsters);
 
-	// useEffect(() => {
-	// 	getAllHamsters(setHamsters);
-	// }, [setHamsters])
+	useEffect(() => {
+		getAllHamsters(setHamsters);
+	}, [setHamsters])
 
 	function refresh() {
 		getAllHamsters(setHamsters);

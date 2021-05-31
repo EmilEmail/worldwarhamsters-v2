@@ -17,6 +17,7 @@ const BattleView = () => {
 		getRandomHamsters(setDefender);
 		getRandomHamsters(setChallenger);
 	},[setDefender, setChallenger])
+
 	if (challenger.firestoreId === defender.firestoreId) {
 		getRandomHamsters(setChallenger);
 	}

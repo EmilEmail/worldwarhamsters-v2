@@ -2,13 +2,16 @@ import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { AllHamsters } from '../atoms/atoms';
 import HamsterCard from '../components/battleview/HamsterCard';
-import { HamsterWinsId, HamsterWithId } from '../interfaces/hamster';
+import { HamsterWithId } from '../interfaces/hamster';
 import './GalleryView.css';
 import AddHamster from '../components/galleryview/AddHamster'
 import DefaultButton from '../components/DefaultButton';
 import HamsterWins from '../components/galleryview/hamsterWins';
+import {deleteHamsterById, getAllHamsters} from '../globalFunctions/G-ApiRequest'
+
+
 const GalleryView = () => {
-	const [allHamsters] = useRecoilState(AllHamsters);
+	const [allHamsters, setAllHamsters] = useRecoilState(AllHamsters);
 	const [page, setPage] = useState<number>(0);
 	const [addHamster, setAddHamster] = useState<null|JSX.Element>(null);
 	const [hamsterCard, setHamsterCard] = useState<null|JSX.Element>(null);
@@ -50,13 +53,25 @@ const GalleryView = () => {
 		else setPage(page - 1)
 		console.log(page)
 	}
+	async function deleteHamster(id:string) {
+		let answer = window.confirm("Are you sure you want to delete this hamster?");
+		if (!answer) {
+			return;
+		} else {
+			deleteHamsterById(id);
+			getAllHamsters(setAllHamsters);
+			setHamsterCard(null);
+		}
+	}
 
-	async function showHamsterCard(hamster:HamsterWithId) {
+	function showHamsterCard(hamster:HamsterWithId) {
 
 		setHamsterCard((
-			<div className="hamster-card-single" onClick={() => setHamsterCard(null)}>
+			<div className="hamster-card-single">
+				<button onClick={() => deleteHamster(hamster.firestoreId)}>Delete this hamster</button>
 				<HamsterCard gameScore={true} hamster={hamster} />
 				<HamsterWins hamsterId={hamster.firestoreId} />
+				<DefaultButton clicked={() => setHamsterCard(null)} buttonText="back" />
 			</div>
 		))
 	}

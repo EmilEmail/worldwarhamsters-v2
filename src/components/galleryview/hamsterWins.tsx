@@ -9,41 +9,46 @@ interface Props {
 }
 const HamsterWins = ({hamsterId}:Props) => {
 	const [hamsterWins, setHamsterWinsId] = useState<HamsterWinsId[]|undefined>()
+	const [page, setPage] = useState(0)
 	useEffect(() => {
 		if(!hamsterWins) {
 			const getMatches = async () => {
 				await getMatchWinners(hamsterId, setHamsterWinsId)
+				console.log(hamsterWins)
 			};
 			getMatches();
 		}
 	}, [])
+	
 
-	// let AllMatchesInPages: MatchesWithId[][] = [];
-	// let matchPage: MatchesWithId[] = [];
+	let AllMatchesInPages: MatchesWithId[][] = [];
+	let matchPage: MatchesWithId[] = [];
 
 
-	// if (hamsterWins) {
-	// 	hamsterWins.forEach((match: MatchesWithId) => {
-	// 		matchPage.push(match)
-	// 		if (matchPage.length > 3) {
-	// 			AllMatchesInPages.push(matchPage);
-	// 			matchPage = [];
-	// 		}
-	// 	});
-	// 	if (matchPage.length > 0) {
-	// 		AllMatchesInPages.push(matchPage);
-	// 	}
-	// }
+	if (hamsterWins) {
+		hamsterWins.forEach((match: MatchesWithId) => {
+			matchPage.push(match)
+			if (matchPage.length > 3) {
+				AllMatchesInPages.push(matchPage);
+				matchPage = [];
+			}
+		});
+		if (matchPage.length > 0) {
+			AllMatchesInPages.push(matchPage);
+		}
+	}
 
 	return (
 		<section>
-			{hamsterWins ? hamsterWins.map(match => (
+			<h2>Winner Against</h2>
+			{AllMatchesInPages.length > 0 ? AllMatchesInPages[page].map(match => (
 				<div>
-					<h2>Winner Against</h2>
 					<LostAgainstList id={match.loserId} />
 				</div>
 			)) : null}
-
+			{AllMatchesInPages.length < 2 ? null :
+			<div><button>prev</button> {page + 1} / {AllMatchesInPages.length - 1} <button>next</button></div>
+			}
 		</section>
 	)
 }

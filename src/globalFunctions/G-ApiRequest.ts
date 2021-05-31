@@ -50,6 +50,15 @@ export async function getHamster(id:string, setToState:(data:any)=>void) {
 
 	} catch (error) {setToState(null)}
 }
+export async function getAllMatches(setToState:(data:any)=>void) {
+	const url = `/matches`;
+	try {
+		const response = await fetch(url, {method: 'GET'});
+		const data: HamsterWithId = await response.json();
+		setToState(data);
+
+	} catch (error) {setToState(null)}
+}
 
 export async function getMatchBetween(id1:string, id2:string, setToState:(data:any)=>void) {
 	const url = ` /score/${id1}/${id2}`;
@@ -112,7 +121,7 @@ export async function putHamster(id:string, obj:object) {
 	}
 }
 
-export async function DELETE(id:string) {
+export async function deleteHamsterById(id:string) {
 	const url = `/hamsters/${id}`;
 	const response = await fetch(url, {method: 'DELETE'});
 	const data = await response.json();

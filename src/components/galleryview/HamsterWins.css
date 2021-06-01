@@ -1,0 +1,16 @@
+.paginate-hamsterwins {
+	text-align: center;
+}
+.paginate-hamsterwins button {
+	cursor: pointer;
+	background: transparent;
+	margin: 0 1em;
+	outline: none;
+	padding: 0.3em;
+	border-radius: 0.5em;
+	border: none;
+	transition: all 1s;
+}
+.paginate-hamsterwins button:hover {
+	background: var(--color2);
+}

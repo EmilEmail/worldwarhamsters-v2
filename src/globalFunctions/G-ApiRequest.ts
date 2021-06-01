@@ -124,6 +124,12 @@ export async function putHamster(id:string, obj:object) {
 export async function deleteHamsterById(id:string) {
 	const url = `/hamsters/${id}`;
 	const response = await fetch(url, {method: 'DELETE'});
-	const data = await response.json();
-	return data;
+	const data = await response.text();
+	console.log(data)
+}
+export async function deleteMatchById(id:string) {
+	const url = `/matches/${id}`;
+	const response = await fetch(url, {method: 'DELETE'});
+	const data = await response.text();
+	console.log(data)
 }

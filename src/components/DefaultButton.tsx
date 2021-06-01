@@ -2,7 +2,7 @@ import './DefaultButton.css'
 
 interface PropsButton {
 	buttonText:string
-	clicked: () => void
+	clicked: () => void 
 }
 
 const DefaultButton = ({clicked, buttonText}:PropsButton) => {

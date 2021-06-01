@@ -47,10 +47,32 @@ header .small-header-upfront {
 	background: var(--color1);
 	
 }
-
-.Link-Active {
-	color: chartreuse;
+.no-connection {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	align-items: center;
+	justify-content: center;
 }
+.no-connection h2 {
+	margin: 2em;
+}
+
+.delete-button {
+	outline: none;
+	padding: 0.5em;
+	border: 5px solid var(--color6);
+	background: var(--color4);
+	cursor: pointer;
+	border-radius: 0.5em;
+	margin-bottom: 0.5em;
+}
+.delete-button:hover {
+	border: 2px solid var(--color6);
+	background: var(--color3);
+	transition: all 1s;
+}
+
 
 @media only screen and (max-width: 600px) {
 	.App {

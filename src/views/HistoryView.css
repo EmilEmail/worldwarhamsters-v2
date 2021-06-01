@@ -1,0 +1,29 @@
+.history-view-wrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.history-pagination {
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+	font-size: 2em;
+}
+
+.history-pagination button {
+	border: none;
+	outline: none;
+	background: transparent;
+	font-size: 2em;
+	padding: 0 0.2em;
+	margin-top: 0.2em;
+	border-radius: 1em;
+	transition: all 1s;
+}
+
+.history-pagination button:hover {
+	background: var(--color2);
+}

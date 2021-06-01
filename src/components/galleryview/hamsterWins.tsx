@@ -3,6 +3,7 @@ import { HamsterWinsId } from "../../interfaces/hamster";
 import {getMatchWinners} from '../../globalFunctions/G-ApiRequest'
 import LostAgainstList from "./WinsAgainstList";
 import { MatchesWithId } from "../../interfaces/matches";
+import './HamsterWins.css'
 
 interface Props {
 	hamsterId: string
@@ -14,11 +15,10 @@ const HamsterWins = ({hamsterId}:Props) => {
 		if(!hamsterWins) {
 			const getMatches = async () => {
 				await getMatchWinners(hamsterId, setHamsterWinsId)
-				console.log(hamsterWins)
 			};
 			getMatches();
 		}
-	}, [])
+	}, [hamsterId, hamsterWins])
 	
 
 	let AllMatchesInPages: MatchesWithId[][] = [];
@@ -28,7 +28,7 @@ const HamsterWins = ({hamsterId}:Props) => {
 	if (hamsterWins) {
 		hamsterWins.forEach((match: MatchesWithId) => {
 			matchPage.push(match)
-			if (matchPage.length > 3) {
+			if (matchPage.length > 0) {
 				AllMatchesInPages.push(matchPage);
 				matchPage = [];
 			}
@@ -37,17 +37,26 @@ const HamsterWins = ({hamsterId}:Props) => {
 			AllMatchesInPages.push(matchPage);
 		}
 	}
+	function paginate(num:number) {
+		if ((num + 1) > AllMatchesInPages.length) return;
+		if (num < 0) return;
+		setPage(num)
+	}
 
 	return (
 		<section>
 			<h2>Winner Against</h2>
 			{AllMatchesInPages.length > 0 ? AllMatchesInPages[page].map(match => (
-				<div>
+				<div className="paginate-hamsterwins">
 					<LostAgainstList id={match.loserId} />
 				</div>
 			)) : null}
 			{AllMatchesInPages.length < 2 ? null :
-			<div><button>prev</button> {page + 1} / {AllMatchesInPages.length - 1} <button>next</button></div>
+				<div className="paginate-hamsterwins">
+					<button onClick={()=>paginate(page - 1)}>&larr;</button> 
+					{page + 1} / {AllMatchesInPages.length}
+					<button onClick={()=>paginate(page + 1)}>&rarr;</button>
+				</div>
 			}
 		</section>
 	)

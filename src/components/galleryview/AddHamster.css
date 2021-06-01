@@ -6,12 +6,14 @@
 	height: 100%;
 
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	background: var(--color6);
 
 }
 .add-hamster-form {
+	margin-top: 1em;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;

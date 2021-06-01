@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { AllHamsters } from '../atoms/atoms';
 import HamsterCard from '../components/battleview/HamsterCard';
@@ -19,6 +19,9 @@ const GalleryView = () => {
 	let AllHamstersInPages: HamsterWithId[][] = [];
 	let hamsterPage: HamsterWithId[] = [];
 
+	useEffect(() => {
+		getAllHamsters(setAllHamsters);
+	},[])
 
 	if (allHamsters) {
 		allHamsters.forEach((hamster: HamsterWithId) => {
@@ -36,7 +39,7 @@ const GalleryView = () => {
 	function toggleAddHamster() {
 		if (!addHamster) {
 			setAddHamster((
-				<AddHamster />
+				<AddHamster setAddHamster={()=>setAddHamster(null)} />
 			))
 		}else {
 			setAddHamster(null);
@@ -68,7 +71,7 @@ const GalleryView = () => {
 
 		setHamsterCard((
 			<div className="hamster-card-single">
-				<button onClick={() => deleteHamster(hamster.firestoreId)}>Delete this hamster</button>
+				<button className="delete-button" onClick={() => deleteHamster(hamster.firestoreId)}>Delete this hamster</button>
 				<HamsterCard gameScore={true} hamster={hamster} />
 				<HamsterWins hamsterId={hamster.firestoreId} />
 				<DefaultButton clicked={() => setHamsterCard(null)} buttonText="back" />

@@ -1,70 +1,115 @@
 import { useState } from 'react'
+import { useRecoilState } from 'recoil';
+import { AllHamsters } from '../../atoms/atoms';
+import { getAllHamsters, postHamster } from '../../globalFunctions/G-ApiRequest';
+import DefaultButton from '../DefaultButton';
 import './AddHamster.css'
+interface Props {
+	setAddHamster: () => void
+}
+const AddHamster = ({setAddHamster}:Props) => {
+	const [hamsters, setHamsters] = useRecoilState(AllHamsters);
 
-const AddHamster = () => {
-	const [wrongName, setWrongName] = useState<null|string>();
-	const [errorText, setErrorText] = useState<null|string>();
-	const [characterCount, setCharacterCount] = useState<number>(0);
 	const [name, setName] = useState('');
 	const [age, setAge] = useState(0);
 	const [loves, setLoves] = useState('');
 	const [favFood, setFavFood] = useState('');
-	const [imgSrc, setImgSrc] = useState('');
+	const [imgName, setImgName] = useState('');
 
-	function validateName(event:any) {
-		let newName:string = event.target.value;
-		let currentValue = name
-		newName.split('').forEach(char => {
-			let str = 'abcdefghijklmnopqrstuvwyz ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-			if (str.split('').includes(char)) {
-				newName = newName;
-			}
-			else newName = currentValue;
-		});
+	const [isValidName, setIsValidName] = useState(false);
+	const [isValidAge, setIsValidAge] = useState(false);
+	const [isValidLoves, setIsValidLoves] = useState(false);
+	const [isValidFavFood, setIsValidFavFood] = useState(false);
+	const [isValidImgName, setIsValidImgName] = useState(false);
+	const [isValidForm, setIsValidForm] = useState(true);
 
-		setName(newName);
-		setWrongName(null)
-		setErrorText(null)
-		setCharacterCount(newName.length)
-		if (newName.length < 3 || newName.length > 32) setWrongName('wrong-color');
-		
+	function validateString(input:string) {
+		if (input.length > 32) return false;
+		if (input.length < 3) return false;
+		return true;
+	}
+	function validateNumber(input:number) {
+		if (input > 100 || input < 0) return false;
+		return true;
 	}
 
-	function validateAge(event:any) {
-		let num = event.target.value
-		if (num > 9999 || Number(num) === NaN) return; ////Skriv ut något
-		setAge(Math.floor(num));
+	function validateName(e:any) {
+		let value = e.target.value;
+		setName(value);
+		let isOkej = validateString(value);
+		if (isOkej) {
+			setIsValidName(true)
+		}
 	}
-
-	function validateLoves(event:any) {
-		const loves = event.target.value;
-		if (loves.length > 32) return  ////Skriv ut något
-		setLoves(loves);
+	function validateAge(e:any) {
+		let value = e.target.value;
+		setAge(value);
+		let isOkej = validateNumber(value)
+		if (isOkej) {
+			setIsValidAge(true)
+		}
 	}
-	function validateFavFood(event:any) {
-		const value = event.target.value;
-		if (value.length > 32) return  ////Skriv ut något
+	function validateLoves(e:any) {
+		let value = e.target.value;
+		setLoves(value);
+		let isOkej = validateString(value);
+		if (isOkej) {
+			setIsValidLoves(true)
+		}
+	}
+	function validateFavFood(e:any) {
+		let value = e.target.value;
 		setFavFood(value);
+		let isOkej = validateString(value);
+		if (isOkej) {
+			setIsValidFavFood(true)
+		}
 	}
-	function validateImgSrc(event:any) {
-		let value = event.target.value;
-		setImgSrc(value);
+	function validateImgName(e:any) {
+		let value = e.target.value;
+		setImgName(value);
+		let isOkej = validateString(value);
+		if (isOkej) {
+			setIsValidImgName(true)
+		}
+	}
+
+	if (isValidAge && isValidFavFood && isValidImgName && isValidName && isValidLoves) {
+		if(isValidForm) {
+			setIsValidForm(false);
+		}
+	}
+
+	async function addHamster() {
+		let hamster = {
+			name: name,
+			age: Number(age),
+			favFood: favFood,
+			loves: loves,
+			wins: 0,
+			imgName: imgName,
+			defeats: 0,
+			games: 0
+		}
+		await postHamster(hamster);
+		await getAllHamsters(setHamsters);
+		setAddHamster();
 	}
 
 
 	return (
 		<section className="add-hamster-overlay">
+			<DefaultButton clicked={setAddHamster} buttonText="Close" />
 			<section className="add-hamster-form">
 				<h2>Add New Hamster</h2>
 				<label>
 					<p>Name:</p>
 					<input 
 						onChange={validateName}
-						value={name} 
+						value={name}
 					/>
 					<div>
-						<p className={wrongName === 'wrong-color' ? 'wrong-color' : ''}>
-							{errorText} ({characterCount})
+						<p>
 						</p>
 					</div>
 				</label>
@@ -76,16 +121,18 @@ const AddHamster = () => {
 					/>
 				</label>
 				<label>Loves: 
-					<input type="text" onChange={validateLoves} value={loves} />
+					<input type="text" value={loves} onChange={validateLoves} />
 				</label>
 				<label>Favorite Food: 
-					<input type="text" onChange={validateFavFood} value={favFood} />
+					<input type="text" value={favFood} onChange={validateFavFood} />
 				</label>
 				<label>Image Source: 
-					<input type="text" onChange={validateImgSrc} value={imgSrc} />
+					<input type="text" value={imgName} onChange={validateImgName} />
 				</label>
-				<button disabled={true} >Add new hamster</button>
+				<button disabled={isValidForm} onClick={addHamster}>Add new hamster</button>
 			</section>
+
+			
 		</section>
 	)
 }

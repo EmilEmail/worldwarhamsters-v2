@@ -5,5 +5,6 @@ export interface Matches {
 }
 export interface MatchesWithId {
 		winnerId: string,
-		loserId: string
+		loserId: string,
+		firestoreId: string
 }

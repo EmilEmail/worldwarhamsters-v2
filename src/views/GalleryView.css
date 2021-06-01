@@ -10,6 +10,7 @@
 	gap: 2em;
 	max-height: 50vh;
 	text-align: center;
+	text-shadow: 0px 0px 20px var(--color7);
 }
 .gallery-items img {
 	width: 100%;
@@ -43,3 +44,4 @@
 	align-items: center;
 	flex-direction: column;
 }
+

@@ -13,10 +13,16 @@ const StatsView = () => {
 
 	return (
 		<section className="stats-view-wrapper">
-			<h2>TOP 5</h2>
+			<h2 className="top5">TOP 5</h2>
 			<div className="stats-list-wrapper">
-				<HamsterList hamsterList={mostWins} />
-				<HamsterList hamsterList={mostDefeats} />
+				<div>
+					<h3 className="topwins">Most wins</h3>
+					<HamsterList hamsterList={mostWins} />
+				</div>
+				<div>
+					<h3 className="topwins">Most Defeats</h3>
+					<HamsterList hamsterList={mostDefeats} />
+				</div>
 			</div>
 		</section>
 	)

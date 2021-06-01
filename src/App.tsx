@@ -9,28 +9,25 @@ import BattleView from './views/BattleView';
 import GalleryView from './views/GalleryView';
 import StatsView from './views/StatsView';
 import HistoryView from './views/HistoryView';
-import DefaultButton from './components/DefaultButton';
+import NoConnection from './views/NoConnection';
 
 function App() {
 	const [hamsters, setHamsters] = useRecoilState(AllHamsters);
+	let noConnection = null
 
 	useEffect(() => {
 		getAllHamsters(setHamsters);
+		
 	}, [setHamsters])
 
-	function refresh() {
-		getAllHamsters(setHamsters);
-	}
-
-	let noConnection = (<></>)
 	if (!hamsters) {
 		noConnection = (
-			<Route path="/"> no connection to server!
-			<DefaultButton clicked={refresh} buttonText="Refresh"></DefaultButton>
+			<Route path="/"> 
+				<NoConnection />
 			</Route>
 		)
 	}else {
-		noConnection = (<></>)
+		noConnection = null
 	}
 
 	return (
@@ -44,7 +41,7 @@ function App() {
 				</header>
 				<main>
 					<Switch>
-						{/* {noConnection} */}
+						{noConnection}
 						<Route path="/battle">
 							<BattleView />
 						</Route>
@@ -64,6 +61,7 @@ function App() {
 				</main>
 				<footer>
 					<nav className="menu-wrapper">
+						<NavLink activeClassName="link-active" to="/">Start</NavLink>
 						<NavLink activeClassName="link-active" to="/battle">Battle</NavLink>
 						<NavLink activeClassName="link-active" to="/gallery">Gallery</NavLink>
 						<NavLink activeClassName="link-active" to="/statistics">Stats</NavLink>

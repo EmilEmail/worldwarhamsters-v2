@@ -16,6 +16,12 @@ const AddHamster = ({setAddHamster}:Props) => {
 	const [favFood, setFavFood] = useState('');
 	const [imgName, setImgName] = useState('');
 
+	const [nameError, setNameError] = useState<string>('');
+	const [ageError, setAgeError] = useState<string>('');
+	const [lovesError, setLovesError] = useState<string>('');
+	const [favFoodError, setFavFoodError] = useState<string>('');
+	const [imgNameError, setImgNameError] = useState<string>('');
+
 	const [isValidName, setIsValidName] = useState(false);
 	const [isValidAge, setIsValidAge] = useState(false);
 	const [isValidLoves, setIsValidLoves] = useState(false);
@@ -35,22 +41,45 @@ const AddHamster = ({setAddHamster}:Props) => {
 
 	function validateName(e:any) {
 		let value = e.target.value;
+		setNameError('')
 		setName(value);
 		let isOkej = validateString(value);
 		if (isOkej) {
 			setIsValidName(true)
+			return;
 		}
+		setIsValidName(false)
 	}
+	function blurName() {
+		if (!isValidName) setNameError('Please enter 3-16 characters');
+	}
+	function blurAge() {
+		if (!isValidAge) setAgeError('Please enter a number between 1-100');
+	}
+	function blurLoves() {
+		if (!isValidLoves) setLovesError('Please enter 3-16 characters');
+	}
+	function blurFavFood() {
+		if (!isValidFavFood) setFavFoodError('Please enter 3-16 characters');
+	}
+	function blurImgName() {
+		if (!isValidImgName) setImgNameError('Please enter 3-16 characters');
+	}
+
 	function validateAge(e:any) {
 		let value = e.target.value;
+		setAgeError('');
 		setAge(value);
 		let isOkej = validateNumber(value)
 		if (isOkej) {
 			setIsValidAge(true)
+			return;
 		}
+		setIsValidAge(false)
 	}
 	function validateLoves(e:any) {
 		let value = e.target.value;
+		setLovesError('');
 		setLoves(value);
 		let isOkej = validateString(value);
 		if (isOkej) {
@@ -59,6 +88,7 @@ const AddHamster = ({setAddHamster}:Props) => {
 	}
 	function validateFavFood(e:any) {
 		let value = e.target.value;
+		setFavFoodError('');
 		setFavFood(value);
 		let isOkej = validateString(value);
 		if (isOkej) {
@@ -68,10 +98,12 @@ const AddHamster = ({setAddHamster}:Props) => {
 	function validateImgName(e:any) {
 		let value = e.target.value;
 		setImgName(value);
-		let isOkej = validateString(value);
-		if (isOkej) {
+		setImgNameError('');
+		if (value.length < 100 ||value.length > 3) {
 			setIsValidImgName(true)
+			return
 		}
+		setIsValidImgName(false)
 	}
 
 	if (isValidAge && isValidFavFood && isValidImgName && isValidName && isValidLoves) {
@@ -106,10 +138,12 @@ const AddHamster = ({setAddHamster}:Props) => {
 					<p>Name:</p>
 					<input 
 						onChange={validateName}
+						onBlur={blurName}
 						value={name}
 					/>
 					<div>
-						<p>
+						<p className="error-msg">
+							{nameError}
 						</p>
 					</div>
 				</label>
@@ -118,16 +152,37 @@ const AddHamster = ({setAddHamster}:Props) => {
 						type="number" 
 						onChange={validateAge}
 						value={age}
+						onBlur={blurAge}
 					/>
+					<div>
+						<p className="error-msg">
+							{ageError}
+						</p>
+					</div>
 				</label>
 				<label>Loves: 
-					<input type="text" value={loves} onChange={validateLoves} />
+					<input type="text" value={loves} onChange={validateLoves} onBlur={blurLoves} />
+					<div>
+						<p className="error-msg">
+							{lovesError}
+						</p>
+					</div>
 				</label>
 				<label>Favorite Food: 
-					<input type="text" value={favFood} onChange={validateFavFood} />
+					<input type="text" value={favFood} onChange={validateFavFood} onBlur={blurFavFood} />
+					<div>
+						<p className="error-msg">
+							{favFoodError}
+						</p>
+					</div>
 				</label>
 				<label>Image Source: 
-					<input type="text" value={imgName} onChange={validateImgName} />
+					<input type="text" value={imgName} onChange={validateImgName} onBlur={blurImgName} />
+					<div>
+						<p className="error-msg">
+							{imgNameError}
+						</p>
+					</div>
 				</label>
 				<button disabled={isValidForm} onClick={addHamster}>Add new hamster</button>
 			</section>

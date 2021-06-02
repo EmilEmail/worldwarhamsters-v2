@@ -37,15 +37,16 @@ const BattleView = () => {
 			loserId: loser.firestoreId
 		}
 		setStats(<div className="loadbar"><h2>...</h2></div>)
-		await Promise.all([
+		Promise.all([
 			putHamster(winner.firestoreId, winnerToDb),
 			putHamster(loser.firestoreId, loserToDb),
 			postMatch(match),
-			getAllHamsters(setHamsters)
-		])
-		setStats(
-			<WinnerLoserStats closeStats={newBattle} winnerId={winner.firestoreId} loserId={loser.firestoreId} />
-		)
+		]).then(async() => {
+			await getAllHamsters(setHamsters)
+			setStats(
+				<WinnerLoserStats closeStats={newBattle} winnerId={winner.firestoreId} loserId={loser.firestoreId} />
+			)
+		})
 	}
 
 function newBattle() {

@@ -91,7 +91,7 @@ export async function postHamster(obj:Hamster) {
 	});
 
 	const data = await response.json();
-	console.log(data)
+	return data;
 }
 export async function postMatch(obj:Matches) {
 	const url = `/matches`;
@@ -102,7 +102,7 @@ export async function postMatch(obj:Matches) {
 	});
 
 	const data = await response.text();
-	console.log(data);
+	return data;
 }
 
 export async function putHamster(id:string, obj:object) {
@@ -114,7 +114,7 @@ export async function putHamster(id:string, obj:object) {
 			headers: {"Content-type": "application/json; charset=UTF-8"}
 		});
 		const data = await response.text();
-		console.log(data)
+		return data;
 		
 	} catch (error) {
 		console.log(error)

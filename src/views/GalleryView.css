@@ -12,6 +12,12 @@
 	text-align: center;
 	text-shadow: 0px 0px 20px var(--color7);
 }
+.gallery-items div {
+	grid-column: 3;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
 .gallery-items img {
 	width: 100%;
 	max-height: 7em;

@@ -47,7 +47,7 @@ const HamsterWins = ({hamsterId}:Props) => {
 		<section>
 			<h2>Winner Against</h2>
 			{AllMatchesInPages.length > 0 ? AllMatchesInPages[page].map(match => (
-				<div className="paginate-hamsterwins">
+				<div key={match.firestoreId} className="paginate-hamsterwins">
 					<LostAgainstList id={match.loserId} />
 				</div>
 			)) : null}

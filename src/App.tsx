@@ -13,23 +13,16 @@ import NoConnection from './views/NoConnection';
 
 function App() {
 	const [hamsters, setHamsters] = useRecoilState(AllHamsters);
-	let noConnection = null
+	// const [noConnection, setNoConnection] = useState(true)
+	let noConnection = true;
 
 	useEffect(() => {
 		getAllHamsters(setHamsters);
 		
 	}, [setHamsters])
 
-	if (!hamsters) {
-		noConnection = (
-			<Route path="/"> 
-				<NoConnection />
-			</Route>
-		)
-	}else {
-		noConnection = null
-	}
-
+	if(hamsters) noConnection = false;
+	
 	return (
 		<Router>
 		<div className="App">
@@ -41,7 +34,12 @@ function App() {
 				</header>
 				<main>
 					<Switch>
-						{noConnection}
+						{noConnection ? 
+							<Route path="/"> 
+								<NoConnection />
+							</Route> :
+							null
+						}
 						<Route path="/battle">
 							<BattleView />
 						</Route>

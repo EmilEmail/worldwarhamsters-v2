@@ -108,7 +108,7 @@ const HistoryView = () => {
 			}
 			<div className="history-pagination">
 				<button onClick={() => paginate(-1)}>&larr;</button>
-				<p>{page + 1} / {allMatches ? (allMatches.length - 1) : null}</p>
+				<p>{page + 1} / {allMatches ? (allMatches.length) : null}</p>
 				<button onClick={() => paginate(1)}>&rarr;</button>
 			</div>
 		</section>

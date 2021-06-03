@@ -20,7 +20,6 @@ const ConfirmBox = ({text, confirmDelete}: Props) => {
 			case 'success':
 				setText('You have now added a hamster')
 				setTimeout(() => confirmDelete(true), 2000);
-				
 				break;
 		}
 	},[])

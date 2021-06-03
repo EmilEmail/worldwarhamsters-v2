@@ -8,6 +8,7 @@ import AddHamster from '../components/galleryview/AddHamster'
 import DefaultButton from '../components/DefaultButton';
 import HamsterWins from '../components/galleryview/hamsterWins';
 import {deleteHamsterById, getAllHamsters} from '../globalFunctions/G-ApiRequest'
+import ConfirmBox from '../components/ConfirmBox';
 
 
 const GalleryView = () => {
@@ -15,6 +16,8 @@ const GalleryView = () => {
 	const [page, setPage] = useState<number>(0);
 	const [addHamster, setAddHamster] = useState<null|JSX.Element>(null);
 	const [hamsterCard, setHamsterCard] = useState<null|JSX.Element>(null);
+	const [confirmBoxOn, setConfirmBoxOn] = useState<null|JSX.Element>(null);
+	let deleteId = '';
 
 	let AllHamstersInPages: HamsterWithId[][] = [];
 	let hamsterPage: HamsterWithId[] = [];
@@ -54,15 +57,22 @@ const GalleryView = () => {
 		if (page <= 0) setPage(AllHamstersInPages.length - 1);
 		else setPage(page - 1)
 	}
-	async function deleteHamster(id:string) {
-		let answer = window.confirm("Are you sure you want to delete this hamster?");
-		if (!answer) {
-			return;
-		} else {
-			deleteHamsterById(id);
+
+	function confirmDelete(yes:boolean) {
+		if (yes) {
+			deleteHamsterById(deleteId);
 			getAllHamsters(setAllHamsters);
 			setHamsterCard(null);
+			setConfirmBoxOn(null);
+		} else {
+			deleteId = '';
+			setConfirmBoxOn(null);
+			return;
 		}
+	}
+	async function deleteHamster(id:string) {
+		deleteId = id;
+		setConfirmBoxOn(<ConfirmBox text={'delete'} confirmDelete={confirmDelete} />)		
 	}
 
 	function showHamsterCard(hamster:HamsterWithId) {
@@ -82,6 +92,7 @@ const GalleryView = () => {
 			<section className="gallery-view">
 				{addHamster}
 				{hamsterCard}
+				{confirmBoxOn}
 	
 				<section className="gallery-add-button">
 					<DefaultButton clicked={toggleAddHamster} buttonText={'Lägg till en ny hamster'} />

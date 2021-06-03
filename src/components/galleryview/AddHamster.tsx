@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useRecoilState } from 'recoil';
 import { AllHamsters } from '../../atoms/atoms';
 import { getAllHamsters, postHamster } from '../../globalFunctions/G-ApiRequest';
+import ConfirmBox from '../ConfirmBox';
 import DefaultButton from '../DefaultButton';
 import './AddHamster.css'
 interface Props {
@@ -9,6 +10,8 @@ interface Props {
 }
 const AddHamster = ({setAddHamster}:Props) => {
 	const [hamsters, setHamsters] = useRecoilState(AllHamsters);
+
+	const [confirmBox, setConfirmBox] = useState(<></>);
 
 	const [name, setName] = useState('');
 	const [age, setAge] = useState(0);
@@ -112,6 +115,11 @@ const AddHamster = ({setAddHamster}:Props) => {
 		}
 	}
 
+	function confirm(yes:boolean) {
+		if (yes) setAddHamster();
+		else setAddHamster();
+	}
+
 	async function addHamster() {
 		let hamster = {
 			name: name,
@@ -125,12 +133,14 @@ const AddHamster = ({setAddHamster}:Props) => {
 		}
 		await postHamster(hamster);
 		await getAllHamsters(setHamsters);
-		setAddHamster();
+		setConfirmBox(<ConfirmBox text={'success'} confirmDelete={confirm} />)
+		
 	}
 
 
 	return (
 		<section className="add-hamster-overlay">
+			{confirmBox}
 			<DefaultButton clicked={setAddHamster} buttonText="Close" />
 			<section className="add-hamster-form">
 				<h2>Add New Hamster</h2>

@@ -8,7 +8,9 @@ export async function getAllHamsters(setToState:(data:any)=>void) {
 		const data = await response.json();
 		setToState(data);
 		
-	} catch (error) {setToState(null)}
+	} catch (error) {
+		setToState(null)
+	}
 }
 
 export async function getHamsterWinners(setToState:(data:any)=>void) {
@@ -76,9 +78,12 @@ export async function getMatchWinners(id:string, setToState:(data:any)=>void) {
 		const response = await fetch(url, {method: 'GET'});
 		const data: HamsterWinsId[] = await response.json();
 		setToState(data);
-		console.log(data);
+		return
 
-	} catch (error) {setToState(null)}
+	} catch (error) {
+		setToState(null)
+		console.log(error)
+	}
 }
 
 

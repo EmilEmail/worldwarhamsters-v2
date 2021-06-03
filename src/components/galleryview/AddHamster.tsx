@@ -118,13 +118,10 @@ const AddHamster = ({setAddHamster}:Props) => {
 	function confirm(yes:boolean) {
 		if (yes) {
 			setAddHamster(); 
-			test = true
 		} 
 		else setAddHamster();
 	}
-	let test = true;
 	async function addHamster() {
-		test = false
 		let hamster = {
 			name: name,
 			age: Number(age),
@@ -198,7 +195,7 @@ const AddHamster = ({setAddHamster}:Props) => {
 						</p>
 					</div>
 				</label>
-				{test ? <button disabled={isValidForm} onFocus={() => setIsValidForm(false)} onClick={addHamster}>Add new hamster</button> : null}
+				<button disabled={isValidForm} onFocus={() => setIsValidForm(false)} onClick={addHamster}>Add new hamster</button>
 			</section>
 
 			

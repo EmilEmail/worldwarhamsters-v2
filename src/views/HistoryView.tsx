@@ -33,6 +33,7 @@ const HistoryView = () => {
 	const unknown = {loserId: '', winnerId: '', firestoreId: ''}
 
 	async function deleteMatch(match:MatchesWithId) {
+		setPage(0);
 		if(match.firestoreId === ''){
 			alert('No Match here...');
 			return;
@@ -41,28 +42,27 @@ const HistoryView = () => {
 		const winner = hamsters.find((hamster:HamsterWithId) => match.winnerId === hamster.firestoreId)
 
 		setLoadbar(<div className="loadbar">Loading...</div>)
-		await deleteMatchById(match.firestoreId);
+		
 		let newLoser;
 		let newWinner;
 		if (winner && loser) {
 			newLoser = {
 				games: loser.games - 1,
-				defeats: loser.defeats - 1,
+				defeats: loser.defeats - 1
 			}
 			newWinner = {
 				games: winner.games - 1,
-				defeats: winner.wins - 1,
+				wins: winner.wins - 1
 			}
 			console.log(newLoser, newWinner)
 			Promise.all([
 				putHamster(loser.firestoreId, newLoser),
 				putHamster(winner.firestoreId, newWinner)
 			]).then(async()=> {
+				await deleteMatchById(match.firestoreId);
 				await getAllHamsters(setHamsters);
 				await getAllMatches(setAllMatches);
 				setLoadbar(<></>)
-				console.log('both')
-				
 			})
 			return;
 		}
@@ -77,7 +77,6 @@ const HistoryView = () => {
 				await getAllHamsters(setHamsters);
 				await getAllMatches(setAllMatches);
 				setLoadbar(<></>)
-				console.log('only winner')
 			})
 			return;
 		}
@@ -92,7 +91,6 @@ const HistoryView = () => {
 				await getAllHamsters(setHamsters);
 				await getAllMatches(setAllMatches);
 				setLoadbar(<></>)
-				console.log('only loser')
 			})
 			return;
 		}

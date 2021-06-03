@@ -58,10 +58,10 @@ const GalleryView = () => {
 		else setPage(page - 1)
 	}
 
-	function confirmDelete(yes:boolean) {
+	async function confirmDelete(yes:boolean) {
 		if (yes) {
-			deleteHamsterById(deleteId);
-			getAllHamsters(setAllHamsters);
+			await deleteHamsterById(deleteId);
+			await getAllHamsters(setAllHamsters);
 			setHamsterCard(null);
 			setConfirmBoxOn(null);
 		} else {
